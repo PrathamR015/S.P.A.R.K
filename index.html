@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.P.A.R.K</title>
+    <!--
+    S - SMART
+    P - PERSONAL
+    A - ASSISTANT FOR
+    R - RECORDING
+    K - KNOWLEDGE
+    -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Futuristic Overlays -->
+    <div class="overlay" id="Overlay"></div>
+    <div class="futuristic-corner corner-top-left"></div>
+    <div class="futuristic-corner corner-top-right"></div>
+    <div class="futuristic-corner corner-bottom-left"></div>
+    <div class="futuristic-corner corner-bottom-right"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo"><h1 style="font-size: largerer;">S.P.A.R.K</h1><span><p style="font-size: medium; margin-left:20px;">SMART PERSONAL ASSISTANT FOR RECORDING KNOWLEDGE</p></span></div>
+            <div class="date-time" id="dateTime"></div>
+        </header>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="tasks">Tasks</button>
+            <button class="nav-tab" data-tab="notes">Notes</button>
+            <button class="nav-tab" data-tab="goals">Goals</button>
+            <button class="nav-tab" data-tab="progress">Progress</button>
+            <button class="nav-tab" data-tab="bookmarks">Bookmarks</button>
+        </div>
+        
+        <div class="dashboard">
+            <!-- Tasks Tab -->
+            <div class="tab-content active" id="tasksTab">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i>📋</i> Task Manager
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="task-input-container">
+                            <input type="text" class="task-input" id="taskInput" placeholder="Add a new task...">
+                            <button class="add-btn" id="addTaskBtn">Add</button>
+                        </div>
+                        <ul class="task-list" id="taskList">
+                            <!-- Tasks will be added here dynamically -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Notes Tab -->
+            <div class="tab-content" id="notesTab">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i>📝</i> Notes
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="note-editor">
+                            <input type="text" class="note-title" id="noteTitle" placeholder="Note title">
+                            <textarea class="note-content" id="noteContent" placeholder="Start typing your note here..."></textarea>
+                            <div class="note-actions">
+                                <button class="add-btn" id="saveNoteBtn">Save Note</button>
+                                <button class="modal-btn modal-btn-cancel" id="clearNoteBtn">Clear</button>
+                            </div>
+                        </div>
+                        <ul class="note-list" id="noteList">
+                            <!-- Notes will be added here dynamically -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Goals Tab -->
+            <div class="tab-content" id="goalsTab">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i>🎯</i> Goals
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="goal-type-selector">
+                            <button class="goal-type-btn active" data-goal-type="daily">Daily Goals</button>
+                            <button class="goal-type-btn" data-goal-type="weekly">Weekly Goals</button>
+                        </div>
+                        
+                        <div class="goal-container active" id="dailyGoals">
+                            <div class="task-input-container">
+                                <input type="text" class="task-input" id="dailyGoalInput" placeholder="Add a daily goal...">
+                                <button class="add-btn" id="addDailyGoalBtn">Add</button>
+                            </div>
+                            <ul class="goal-list" id="dailyGoalList">
+                                <!-- Daily goals will be added here -->
+                            </ul>
+                        </div>
+                        
+                        <div class="goal-container" id="weeklyGoals">
+                            <div class="task-input-container">
+                                <input type="text" class="task-input" id="weeklyGoalInput" placeholder="Add a weekly goal...">
+                                <button class="add-btn" id="addWeeklyGoalBtn">Add</button>
+                            </div>
+                            <ul class="goal-list" id="weeklyGoalList">
+                                <!-- Weekly goals will be added here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progress Tab -->
+            <div class="tab-content" id="progressTab">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i>📊</i> Progress Visualization
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="progress-container">
+                            <div class="progress-chart">
+                                <svg viewBox="0 0 100 100">
+                                    <circle class="chart-circle chart-circle-bg" cx="50" cy="50" r="40"></circle>
+                                    <circle class="chart-circle chart-circle-progress" id="taskCompletionCircle" cx="50" cy="50" r="40" stroke-dasharray="0 251.327"></circle>
+                                </svg>
+                                <div class="chart-text">
+                                    <div class="chart-percentage" id="taskCompletionPercentage">0%</div>
+                                    <div class="chart-label">Tasks Completed</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-stats">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="completedTasksCount">0</div>
+                                    <div class="stat-label">Completed Tasks</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="pendingTasksCount">0</div>
+                                    <div class="stat-label">Pending Tasks</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="dailyGoalsCount">0/0</div>
+                                    <div class="stat-label">Daily Goals</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="weeklyGoalsCount">0/0</div>
+                                    <div class="stat-label">Weekly Goals</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bookmarks Tab -->
+            <div class="tab-content" id="bookmarksTab">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i>🔖</i> Quick Bookmarks
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="bookmark-grid" id="bookmarkGrid">
+                            <!-- Bookmarks will be added here -->
+                            <div class="bookmark-card bookmark-add" id="addBookmarkBtn">
+                                <div class="bookmark-icon bookmark-add-icon">+</div>
+                                <div class="bookmark-title">Add New</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bookmark Modal -->
+    <div class="bookmark-modal" id="bookmarkModal">
+        <div class="bookmark-modal-content">
+            <div class="bookmark-modal-header">
+                <div class="bookmark-modal-title">Add Bookmark</div>
+                <button class="bookmark-modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="bookmark-form-group">
+                <label class="bookmark-form-label" for="bookmarkTitle">Title</label>
+                <input type="text" class="bookmark-form-input" id="bookmarkTitle" placeholder="e.g. Google">
+            </div>
+            <div class="bookmark-form-group">
+                <label class="bookmark-form-label" for="bookmarkUrl">URL</label>
+                <input type="text" class="bookmark-form-input" id="bookmarkUrl" placeholder="e.g. https://www.google.com">
+            </div>
+            <div class="bookmark-form-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancelBookmarkBtn">Cancel</button>
+                <button class="modal-btn modal-btn-save" id="saveBookmarkBtn">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+
+
+
+
+
+
+
+
+
+
+
+
+// DOM Elements
+const dateTimeEl = document.getElementById('dateTime');
+const navTabs = document.querySelectorAll('.nav-tab');
+const tabContents = document.querySelectorAll('.tab-content');
+const taskInput = document.getElementById('taskInput');
+const addTaskBtn = document.getElementById('addTaskBtn');
+const taskList = document.getElementById('taskList');
+const noteTitle = document.getElementById('noteTitle');
+const noteContent = document.getElementById('noteContent');
+const saveNoteBtn = document.getElementById('saveNoteBtn');
+const clearNoteBtn = document.getElementById('clearNoteBtn');
+const noteList = document.getElementById('noteList');
+const goalTypeBtns = document.querySelectorAll('.goal-type-btn');
+const goalContainers = document.querySelectorAll('.goal-container');
+const dailyGoalInput = document.getElementById('dailyGoalInput');
+const weeklyGoalInput = document.getElementById('weeklyGoalInput');
+const addDailyGoalBtn = document.getElementById('addDailyGoalBtn');
+const addWeeklyGoalBtn = document.getElementById('addWeeklyGoalBtn');
+const dailyGoalList = document.getElementById('dailyGoalList');
+const weeklyGoalList = document.getElementById('weeklyGoalList');
+const taskCompletionCircle = document.getElementById('taskCompletionCircle');
+const taskCompletionPercentage = document.getElementById('taskCompletionPercentage');
+const completedTasksCount = document.getElementById('completedTasksCount');
+const pendingTasksCount = document.getElementById('pendingTasksCount');
+const dailyGoalsCount = document.getElementById('dailyGoalsCount');
+const weeklyGoalsCount = document.getElementById('weeklyGoalsCount');
+const bookmarkGrid = document.getElementById('bookmarkGrid');
+const addBookmarkBtn = document.getElementById('addBookmarkBtn');
+const bookmarkModal = document.getElementById('bookmarkModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const bookmarkTitle = document.getElementById('bookmarkTitle');
+const bookmarkUrl = document.getElementById('bookmarkUrl');
+const saveBookmarkBtn = document.getElementById('saveBookmarkBtn');
+const cancelBookmarkBtn = document.getElementById('cancelBookmarkBtn');
+const jarvisOverlay = document.getElementById('jarvisOverlay');
+
+// State object to manage app data
+const state = {
+    tasks: [],
+    notes: [],
+    dailyGoals: [],
+    weeklyGoals: [],
+    bookmarks: [],
+    activeNoteId: null
+};
+
+// Initialize the app
+function initApp() {
+    loadFromLocalStorage();
+    updateDateTime();
+    createFuturisticElements();
+    renderTasks();
+    renderNotes();
+    renderDailyGoals();
+    renderWeeklyGoals();
+    renderBookmarks();
+    updateProgress();
+    
+    // Set interval to update date and time
+    setInterval(updateDateTime, 1000);
+}
+
+// Save all data to localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('jarvisData', JSON.stringify(state));
+}
+
+// Load data from localStorage
+function loadFromLocalStorage() {
+    const savedData = localStorage.getItem('jarvisData');
+    if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        Object.assign(state, parsedData);
+    }
+}
+
+// Update date and time
+function updateDateTime() {
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true
+    };
+    dateTimeEl.textContent = now.toLocaleDateString('en-US', options);
+}
+
+// Create futuristic background elements
+function createFuturisticElements() {
+    // Create particles
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'jarvis-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        jarvisOverlay.appendChild(particle);
+        
+        // Animate particles
+        setInterval(() => {
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.opacity = (Math.random() * 0.5).toString();
+        }, 3000 + Math.random() * 5000);
+    }
+    
+    // Create horizontal lines
+    for (let i = 0; i < 10; i++) {
+        const line = document.createElement('div');
+        line.className = 'jarvis-line';
+        line.style.top = `${10 + i * 10}%`;
+        line.style.width = '100%';
+        jarvisOverlay.appendChild(line);
+    }
+}
+
+// Tab Navigation
+navTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const tabId = tab.getAttribute('data-tab');
+        
+        // Update active tab
+        navTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Update active content
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(`${tabId}Tab`).classList.add('active');
+    });
+});
+
+// Tasks functionality
+function addTask() {
+    const taskText = taskInput.value.trim();
+    if (taskText) {
+        const newTask = {
+            id: Date.now(),
+            text: taskText,
+            completed: false,
+            createdAt: new Date().toISOString()
+        };
+        
+        state.tasks.unshift(newTask);
+        saveToLocalStorage();
+        renderTasks();
+        updateProgress();
+        taskInput.value = '';
+        taskInput.focus();
+    }
+}
+
+function toggleTaskCompletion(taskId) {
+    state.tasks = state.tasks.map(task => 
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+    );
+    saveToLocalStorage();
+    renderTasks();
+    updateProgress();
+}
+
+function deleteTask(taskId) {
+    state.tasks = state.tasks.filter(task => task.id !== taskId);
+    saveToLocalStorage();
+    renderTasks();
+    updateProgress();
+}
+
+function renderTasks() {
+    taskList.innerHTML = '';
+    
+    if (state.tasks.length === 0) {
+        taskList.innerHTML = '<li class="task-item" style="text-align: center; opacity: 0.7;">No tasks yet. Add your first task above!</li>';
+        return;
+    }
+    
+    state.tasks.forEach(task => {
+        const taskItem = document.createElement('li');
+        taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+        taskItem.innerHTML = `
+            <span class="task-text">${task.text}</span>
+            <div class="task-actions">
+                <button class="task-btn task-complete" data-id="${task.id}">
+                    ${task.completed ? '↩️' : '✓'}
+                </button>
+                <button class="task-btn task-delete" data-id="${task.id}">🗑️</button>
+            </div>
+        `;
+        
+        taskList.appendChild(taskItem);
+    });
+    
+    // Add event listeners to buttons
+    document.querySelectorAll('.task-complete').forEach(btn => {
+        btn.addEventListener('click', () => toggleTaskCompletion(parseInt(btn.getAttribute('data-id'))));
+    });
+    
+    document.querySelectorAll('.task-delete').forEach(btn => {
+        btn.addEventListener('click', () => deleteTask(parseInt(btn.getAttribute('data-id'))));
+    });
+}
+
+// Notes functionality
+function saveNote() {
+    const title = noteTitle.value.trim() || 'Untitled Note';
+    const content = noteContent.value.trim();
+    
+    if (content) {
+        if (state.activeNoteId) {
+            // Update existing note
+            state.notes = state.notes.map(note => 
+                note.id === state.activeNoteId 
+                    ? { ...note, title, content, updatedAt: new Date().toISOString() } 
+                    : note
+            );
+        } else {
+            // Create new note
+            const newNote = {
+                id: Date.now(),
+                title,
+                content,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            state.notes.unshift(newNote);
+        }
+        
+        saveToLocalStorage();
+        renderNotes();
+        clearNoteForm();
+    }
+}
+
+function editNote(noteId) {
+    const note = state.notes.find(note => note.id === noteId);
+    if (note) {
+        noteTitle.value = note.title;
+        noteContent.value = note.content;
+        state.activeNoteId = note.id;
+    }
+}
+
+function deleteNote(noteId) {
+    state.notes = state.notes.filter(note => note.id !== noteId);
+    if (state.activeNoteId === noteId) {
+        clearNoteForm();
+    }
+    saveToLocalStorage();
+    renderNotes();
+}
+
+function clearNoteForm() {
+    noteTitle.value = '';
+    noteContent.value = '';
+    state.activeNoteId = null;
+}
+
+function renderNotes() {
+    noteList.innerHTML = '';
+    
+    if (state.notes.length === 0) {
+        noteList.innerHTML = '<li class="note-item" style="text-align: center; opacity: 0.7;">No notes yet. Create your first note above!</li>';
+        return;
+    }
+    
+    state.notes.forEach(note => {
+        const noteItem = document.createElement('li');
+        noteItem.className = 'note-item';
+        noteItem.setAttribute('data-id', note.id);
+        
+        // Format preview text (first 60 characters)
+        const previewText = note.content.length > 60 
+            ? note.content.substring(0, 60) + '...' 
+            : note.content;
+        
+        noteItem.innerHTML = `
+            <h4>${note.title}</h4>
+            <p>${previewText}</p>
+            <div class="task-actions" style="margin-top: 8px;">
+                <button class="task-btn note-edit" data-id="${note.id}">✏️</button>
+                <button class="task-btn task-delete note-delete" data-id="${note.id}">🗑️</button>
+            </div>
+        `;
+        
+        noteList.appendChild(noteItem);
+    });
+    
+    // Add event listeners
+    document.querySelectorAll('.note-edit').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            editNote(parseInt(btn.getAttribute('data-id')));
+        });
+    });
+    
+    document.querySelectorAll('.note-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteNote(parseInt(btn.getAttribute('data-id')));
+        });
+    });
+    
+    document.querySelectorAll('.note-item').forEach(item => {
+        item.addEventListener('click', () => {
+            editNote(parseInt(item.getAttribute('data-id')));
+        });
+    });
+}
+
+// Goals functionality
+function toggleGoalType(type) {
+    goalTypeBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-goal-type') === type);
+    });
+    
+    goalContainers.forEach(container => {
+        container.classList.toggle('active', container.id === `${type}Goals`);
+    });
+}
+
+function addDailyGoal() {
+    const goalText = dailyGoalInput.value.trim();
+    if (goalText) {
+        const newGoal = {
+            id: Date.now(),
+            text: goalText,
+            progress: 0,
+            createdAt: new Date().toISOString()
+        };
+        
+        state.dailyGoals.unshift(newGoal);
+        saveToLocalStorage();
+        renderDailyGoals();
+        updateProgress();
+        dailyGoalInput.value = '';
+        dailyGoalInput.focus();
+    }
+}
+
+function addWeeklyGoal() {
+    const goalText = weeklyGoalInput.value.trim();
+    if (goalText) {
+        const newGoal = {
+            id: Date.now(),
+            text: goalText,
+            progress: 0,
+            createdAt: new Date().toISOString()
+        };
+        
+        state.weeklyGoals.unshift(newGoal);
+        saveToLocalStorage();
+        renderWeeklyGoals();
+        updateProgress();
+        weeklyGoalInput.value = '';
+        weeklyGoalInput.focus();
+    }
+}
+
+function updateGoalProgress(type, goalId, progress) {
+    const goals = type === 'daily' ? state.dailyGoals : state.weeklyGoals;
+    const updatedGoals = goals.map(goal => 
+        goal.id === goalId 
+            ? { ...goal, progress: Math.min(100, Math.max(0, progress)) } 
+            : goal
+    );
+    
+    if (type === 'daily') {
+        state.dailyGoals = updatedGoals;
+    } else {
+        state.weeklyGoals = updatedGoals;
+    }
+    
+    saveToLocalStorage();
+    type === 'daily' ? renderDailyGoals() : renderWeeklyGoals();
+    updateProgress();
+}
+
+function deleteGoal(type, goalId) {
+    if (type === 'daily') {
+        state.dailyGoals = state.dailyGoals.filter(goal => goal.id !== goalId);
+        renderDailyGoals();
+    } else {
+        state.weeklyGoals = state.weeklyGoals.filter(goal => goal.id !== goalId);
+        renderWeeklyGoals();
+    }
+    
+    saveToLocalStorage();
+    updateProgress();
+}
+
+function renderGoalList(goals, listElement, type) {
+    listElement.innerHTML = '';
+    
+    if (goals.length === 0) {
+        listElement.innerHTML = `<li class="goal-item" style="text-align: center; opacity: 0.7;">No ${type} goals yet. Add your first goal above!</li>`;
+        return;
+    }
+    
+    goals.forEach(goal => {
+        const goalItem = document.createElement('li');
+        goalItem.className = 'goal-item';
+        goalItem.innerHTML = `
+            <div class="goal-header">
+                <span class="goal-title">${goal.text}</span>
+                <span>${goal.progress}%</span>
+            </div>
+            <div class="goal-progress">
+                <div class="goal-progress-bar" style="width: ${goal.progress}%"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; align-items: center;">
+                <div>
+                    <button class="task-btn goal-decrease" data-type="${type}" data-id="${goal.id}">-</button>
+                    <button class="task-btn goal-increase" data-type="${type}" data-id="${goal.id}">+</button>
+                </div>
+                <button class="task-btn task-delete" data-type="${type}" data-id="${goal.id}">🗑️</button>
+            </div>
+        `;
+        
+        listElement.appendChild(goalItem);
+    });
+    
+    // Add event listeners
+    document.querySelectorAll(`.goal-decrease[data-type="${type}"]`).forEach(btn => {
+        btn.addEventListener('click', () => {
+            const goalId = parseInt(btn.getAttribute('data-id'));
+            const goal = type === 'daily' 
+                ? state.dailyGoals.find(g => g.id === goalId)
+                : state.weeklyGoals.find(g => g.id === goalId);
+            
+            updateGoalProgress(type, goalId, goal.progress - 10);
+        });
+    });
+    
+    document.querySelectorAll(`.goal-increase[data-type="${type}"]`).forEach(btn => {
+        btn.addEventListener('click', () => {
+            const goalId = parseInt(btn.getAttribute('data-id'));
+            const goal = type === 'daily' 
+                ? state.dailyGoals.find(g => g.id === goalId)
+                : state.weeklyGoals.find(g => g.id === goalId);
+            
+            updateGoalProgress(type, goalId, goal.progress + 10);
+        });
+    });
+    
+    document.querySelectorAll(`.task-delete[data-type="${type}"]`).forEach(btn => {
+        btn.addEventListener('click', () => {
+            deleteGoal(type, parseInt(btn.getAttribute('data-id')));
+        });
+    });
+}
+
+function renderDailyGoals() {
+    renderGoalList(state.dailyGoals, dailyGoalList, 'daily');
+}
+
+function renderWeeklyGoals() {
+    renderGoalList(state.weeklyGoals, weeklyGoalList, 'weekly');
+}
+
+// Progress visualization
+function updateProgress() {
+    // Task progress
+    const totalTasks = state.tasks.length;
+    const completedTasks = state.tasks.filter(task => task.completed).length;
+    const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+    
+    // Update circle progress
+    const circumference = 2 * Math.PI * 40; // 2πr where r=40
+    const dashOffset = circumference * (1 - completionPercentage / 100);
+    taskCompletionCircle.style.strokeDasharray = `${circumference - dashOffset} ${dashOffset}`;
+    
+    // Update text
+    taskCompletionPercentage.textContent = `${completionPercentage}%`;
+    completedTasksCount.textContent = completedTasks;
+    pendingTasksCount.textContent = totalTasks - completedTasks;
+    
+    // Daily goals progress
+    const completedDailyGoals = state.dailyGoals.filter(goal => goal.progress === 100).length;
+    dailyGoalsCount.textContent = `${completedDailyGoals}/${state.dailyGoals.length}`;
+    
+    // Weekly goals progress
+    const completedWeeklyGoals = state.weeklyGoals.filter(goal => goal.progress === 100).length;
+    weeklyGoalsCount.textContent = `${completedWeeklyGoals}/${state.weeklyGoals.length}`;
+}
+
+// Bookmarks functionality
+function toggleBookmarkModal(show) {
+    bookmarkModal.classList.toggle('active', show);
+    if (show) {
+        bookmarkTitle.value = '';
+        bookmarkUrl.value = '';
+        bookmarkTitle.focus();
+    }
+}
+
+function addBookmark() {
+    const title = bookmarkTitle.value.trim();
+    let url = bookmarkUrl.value.trim();
+    
+    if (title && url) {
+        // Add http:// if missing
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+        
+        const newBookmark = {
+            id: Date.now(),
+            title,
+            url,
+            createdAt: new Date().toISOString()
+        };
+        
+        state.bookmarks.push(newBookmark);
+        saveToLocalStorage();
+        renderBookmarks();
+        toggleBookmarkModal(false);
+    }
+}
+
+function deleteBookmark(bookmarkId) {
+    state.bookmarks = state.bookmarks.filter(bookmark => bookmark.id !== bookmarkId);
+    saveToLocalStorage();
+    renderBookmarks();
+}
+
+function renderBookmarks() {
+    // Clear the grid except for the "Add New" button
+    while (bookmarkGrid.firstChild && bookmarkGrid.firstChild !== addBookmarkBtn) {
+        bookmarkGrid.removeChild(bookmarkGrid.firstChild);
+    }
+    
+    // Render bookmarks
+    state.bookmarks.forEach(bookmark => {
+        const bookmarkCard = document.createElement('div');
+        bookmarkCard.className = 'bookmark-card';
+        bookmarkCard.innerHTML = `
+            <div class="bookmark-icon">${bookmark.title.charAt(0).toUpperCase()}</div>
+            <div class="bookmark-title">${bookmark.title}</div>
+            <button class="task-btn task-delete bookmark-delete" data-id="${bookmark.id}" style="position: absolute; top: 5px; right: 5px;">×</button>
+        `;
+        
+        bookmarkCard.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('bookmark-delete')) {
+                window.open(bookmark.url, '_blank');
+            }
+        });
+        
+        bookmarkGrid.insertBefore(bookmarkCard, addBookmarkBtn);
+    });
+    
+    // Add event listeners for delete buttons
+    document.querySelectorAll('.bookmark-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteBookmark(parseInt(btn.getAttribute('data-id')));
+        });
+    });
+}
+
+// Event Listeners
+addTaskBtn.addEventListener('click', addTask);
+taskInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') addTask();
+});
+
+saveNoteBtn.addEventListener('click', saveNote);
+clearNoteBtn.addEventListener('click', clearNoteForm);
+
+goalTypeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        toggleGoalType(btn.getAttribute('data-goal-type'));
+    });
+});
+
+addDailyGoalBtn.addEventListener('click', addDailyGoal);
+dailyGoalInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') addDailyGoal();
+});
+
+addWeeklyGoalBtn.addEventListener('click', addWeeklyGoal);
+weeklyGoalInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') addWeeklyGoal();
+});
+
+addBookmarkBtn.addEventListener('click', () => toggleBookmarkModal(true));
+closeModalBtn.addEventListener('click', () => toggleBookmarkModal(false));
+cancelBookmarkBtn.addEventListener('click', () => toggleBookmarkModal(false));
+saveBookmarkBtn.addEventListener('click', addBookmark);
+
+// Initialize the app when the DOM is loaded
+document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>
